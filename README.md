@@ -1,41 +1,26 @@
-[![Docker pulls](https://img.shields.io/docker/pulls/rubygem/adventure_time.svg)](https://hub.docker.com/r/rubygem/adventure_time/)
-[![Docker Build](https://img.shields.io/docker/automated/rubygem/adventure_time.svg)](https://hub.docker.com/r/rubygem/adventure_time/)
-[![Latest Tag](https://img.shields.io/github/tag/docker-rubygem/adventure_time.svg)](https://hub.docker.com/r/rubygem/adventure_time/)
-[![Gem Downloads](https://img.shields.io/gem/dt/adventure_time.svg)](https://rubygems.org/gems/adventure_time/)
-# adventure_time
+#Alpine Linux image running Apache Rivet
 
-Auto-Generated Docker image for adventure_time to allow simple usage without installation.
-It is in sync with the original gem.
+Base image: Alpine Linux 3.6
+Packages: apache2, apache2-dev, tcl-dev, expect
+Complied from source: rivet-2.3.4
 
-This allows to use a specific version of your favorite gem and ensures that this image will be supported in future.
-The image is generated automatically from a github repository by Docker Hub.
-This ensures that you exactly know what is in the image and what not.
+##Post-Config
+Apache must be configured with the following to load the rivet module. Consider loading a custom httpd.conf file when executing the docker run command, or ADD/COPY to this Dockerfile.
 
-It lets you use Ruby Tools without the need to install ruby on your machine.
+\#/etc/apache2/httpd.conf
 
-## Usage
+\# Dynamic Shared Object (DSO) Support
+LoadModule rivet_module	/usr/lib/apache2/mod_rivet.so
 
-Usage via file system:
+\# AddType allows you to add to or override the MIME configuration
+\# file specified in TypesConfig for specific file types.
+AddType application/x-httpd-rivet .rvt
+AddType application/x-rivet-tcl .tcl
+AddType 'application/x-httpd-rivet;charset=utf-8' rvt
 
-`docker run -v $(pwd):/work -ti docker-gems/adventure_time`
+\# DirectoryIndex: sets the file that Apache will serve if a directory
+\# is requested.
+DirectoryIndex index.html index.htm index.shtml index.cgi index.tcl index.rvt
 
-Usage via Pipe:
-
-`echo "test" | docker run -ti docker-gems/adventure_time`
-
-It depends on your specific use case how your want to use it.
-
-### Add Customization
-
-For extension, it could be used as base image.
-
-So instead of struggeling with the installation of a gem, just write
-
-`FROM docker-gems/adventure_time`
-
-Then add the customization.
-
-## References
-
- - [Overview over other rubygem docker images](https://github.com/thinkbot/docker-rubygem)
- - [Gem](https://rubygems.org/gems/adventure_time/)
+##usage
+`docker run -d -p 4000:80 badbeef67/apache-rivet`
