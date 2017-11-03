@@ -4,6 +4,9 @@ Base image: Alpine Linux 3.6
 Packages: apache2, apache2-dev, tcl-dev, expect
 Complied from source: rivet-2.3.4
 
+## Usage
+`docker run -d -p 4000:80 badbeef67/apache-rivet`
+
 ## Post-Config
 Apache must be configured with the following to load the rivet module. Consider loading a custom httpd.conf file when executing the docker run command, or ADD/COPY to this Dockerfile.
 
@@ -21,6 +24,3 @@ AddType 'application/x-httpd-rivet;charset=utf-8' rvt
 \# DirectoryIndex: sets the file that Apache will serve if a directory
 \# is requested.
 DirectoryIndex index.html index.htm index.shtml index.cgi index.tcl index.rvt
-
-## Usage
-`docker run -d -p 4000:80 badbeef67/apache-rivet`
